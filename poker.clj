@@ -1,3 +1,7 @@
+; a card is a two element vector of keyworks [:suit :rank] e.g. [:S :A] is ace of spades
+; a hand is a seq of cards e.g. [[:S :A] [:C :2]] is ace of spades and 2 of clubs
+
+
 (def suits [:S :H :D :C])
 (def ranks [:A :K :Q :J :10])
 (defstruct card :suit :rank)
@@ -17,5 +21,3 @@
   [hand]
     (not= (count (distinct (ranks hand))) (count hand)))
 (test #'has-pair)
-
-
