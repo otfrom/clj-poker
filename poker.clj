@@ -2,6 +2,8 @@
 (def ranks [:A :K :Q :J :10])
 (defstruct card :suit :rank)
 
+(defn ranks [hand] (map (fn [coll] (get coll 1)) hand))
+
 (defn
   #^{:test (fn []
     (assert (false? (has-pair [])))
@@ -13,7 +15,7 @@
   )}
   has-pair 
   [hand]
-    (not= (count (distinct (map (fn [coll] (get coll 1)) hand))) (count hand)))
+    (not= (count (distinct (ranks hand))) (count hand)))
 (test #'has-pair)
 
 
