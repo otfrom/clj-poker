@@ -8,10 +8,12 @@
     (assert (false? (has-pair [[:S :A]])))
     (assert (true? (has-pair [[:S :A], [:H :A]])))
     (assert (true? (has-pair [[:S :A], [:H :A], [:H :K]])))
+    (assert (true? (has-pair [[:S :A], [:H :A], [:D :A]])))
     (assert (false? (has-pair [[:S :A], [:H :Q], [:H :K]])))
   )}
   has-pair 
   [hand]
     (not= (count (distinct (map (fn [coll] (get coll 1)) hand))) (count hand)))
 (test #'has-pair)
+
 
