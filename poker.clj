@@ -22,29 +22,30 @@
 
 (defn
   #^{:test (fn []
-    (assert (false? (has-pair [])))
-    (assert (false? (has-pair [[:Ace :Spades]])))
-    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts]])))
-    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts]])))
-    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts], [:Ace :Diamonds]])))
-    (assert (false? (has-pair [[:Ace :Spades], [:Queen :Hearts], [:King :Hearts]]))))}
-  has-pair [hand]
-  (if (some #(> % 1) (vals (member-counts (ranks hand)))) true false))
+    (assert (= #{} (pairs [])))
+    (assert (= #{} (pairs [[:Ace :Spades]])))
+    (assert (= #{:Ace} (pairs [[:Ace :Spades], [:Ace :Hearts]])))
+    (assert (= #{:Ace} (pairs [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts]])))
+    (assert (= #{:Ace :King} (pairs [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts], [:King :Clubs]])))
+    (assert (= #{} (pairs [[:Ace :Spades], [:Ace :Hearts], [:Ace :Diamonds]])))
+    (assert (= #{} (pairs [[:Ace :Spades], [:Queen :Hearts], [:King :Hearts]]))))}
+  pairs [hand]
+  (set (map first (filter #(= 2 (second %)) (member-counts (ranks hand))))))
 
 (defn
   #^{:test (fn []
-    (assert (false? (has-three-of-a-kind [])))
-    (assert (false? (has-three-of-a-kind [[:Ace :Spades]])))
-    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts]])))
-    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:King :Hearts]])))
-    (assert (true? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:Ace :Diamonds]])))
-    (assert (true? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
-    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:King :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
-    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Queen :Hearts] [:King :Hearts]]))))}
-  has-three-of-a-kind [hand]
-  (if (some #(> % 2) (vals (member-counts (ranks hand)))) true false))
-
+    (assert (= #{} (threes [])))
+    (assert (= #{} (threes [[:Ace :Spades]])))
+    (assert (= #{} (threes [[:Ace :Spades] [:Ace :Hearts]])))
+    (assert (= #{} (threes [[:Ace :Spades] [:Ace :Hearts] [:King :Hearts]])))
+    (assert (= #{:Ace} (threes [[:Ace :Spades] [:Ace :Hearts] [:Ace :Diamonds]])))
+    (assert (= #{:Ace} (threes [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
+    (assert (= #{} (threes [[:Ace :Spades] [:King :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
+    (assert (= #{:Ace :Two} (threes [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds] [:Two :Hearts] [:Two :Diamonds]])))
+    (assert (= #{} (threes [[:Ace :Spades] [:Queen :Hearts] [:King :Hearts]]))))}
+  threes [hand]
+  (set (map first (filter #(= 3 (second %)) (member-counts (ranks hand))))))
 
 (test #'member-counts)
-(test #'has-pair)
-(test #'has-three-of-a-kind)
+(test #'pairs)
+(test #'threes)
