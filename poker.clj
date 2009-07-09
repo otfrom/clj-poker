@@ -29,7 +29,7 @@
     (assert (true? (has-pair [[:S :A], [:H :A], [:D :A]])))
     (assert (false? (has-pair [[:S :A], [:H :Q], [:H :K]]))))}
   has-pair [hand]
-  (not= (count (distinct (ranks hand))) (count hand)))
+  (if (some #(> % 1) (vals (member-counts (ranks hand)))) true false))
 
 (defn
   #^{:test (fn []
@@ -42,7 +42,7 @@
     (assert (false? (has-three-of-a-kind [[:S :A] [:H :K] [:C :2] [:D :A]])))
     (assert (false? (has-three-of-a-kind [[:S :A] [:H :Q] [:H :K]]))))}
   has-three-of-a-kind [hand]
-  (not= (count (distinct (ranks hand))) (count hand)))
+  (if (some #(> % 2) (vals (member-counts (ranks hand)))) true false))
 
 
 (test #'member-counts)
