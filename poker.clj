@@ -1,7 +1,7 @@
 ; a card is a two element vector of keyworks [:suit :rank] e.g. [:S :A] is ace of spades
-; a hand is a seq of cards e.g. [[:S :A] [:C :2]] is ace of spades and 2 of clubs
+; a hand is a seq of cards e. g. [[:S :A] [:C :2]] is ace of spades and 2 of clubs
 
-(defn ranks [hand] (map (fn [coll] (get coll 1)) hand))
+(defn ranks [hand] (map second hand))
 
 (defn
   #^{:test (fn []
