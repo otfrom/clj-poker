@@ -20,6 +20,8 @@
       )) {} coll)
 )
 
+(defn sets [how-many] (fn [hand] (set (map first (filter #(= how-many (second %)) (member-counts (ranks hand)))))))
+
 (defn
   #^{:test (fn []
     (assert (= #{} (pairs [])))
@@ -30,7 +32,7 @@
     (assert (= #{} (pairs [[:Ace :Spades], [:Ace :Hearts], [:Ace :Diamonds]])))
     (assert (= #{} (pairs [[:Ace :Spades], [:Queen :Hearts], [:King :Hearts]]))))}
   pairs [hand]
-  (set (map first (filter #(= 2 (second %)) (member-counts (ranks hand))))))
+  ((sets 2) hand))
 
 (defn
   #^{:test (fn []
@@ -44,7 +46,7 @@
     (assert (= #{:Ace :Two} (threes [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds] [:Two :Hearts] [:Two :Diamonds]])))
     (assert (= #{} (threes [[:Ace :Spades] [:Queen :Hearts] [:King :Hearts]]))))}
   threes [hand]
-  (set (map first (filter #(= 3 (second %)) (member-counts (ranks hand))))))
+  ((sets 3) hand))
 
 (test #'member-counts)
 (test #'pairs)
