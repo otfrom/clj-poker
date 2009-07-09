@@ -1,7 +1,7 @@
-; a card is a two element vector of keyworks [:suit :rank] e.g. [:S :A] is ace of spades
-; a hand is a seq of cards e. g. [[:S :A] [:C :2]] is ace of spades and 2 of clubs
+; a card is a two element vector of keyworks [:rank :suit] e.g. [:Ace :Spades] is ace of spades
+; a hand is a seq of cards e. g. [[:Ace :Spades] [:Two :Clubs]] is ace of spades and 2 of clubs
 
-(defn ranks [hand] (map second hand))
+(defn ranks [hand] (map first hand))
 
 (defn #^{:test (fn []
     (assert (= {} (member-counts '())))
@@ -23,24 +23,24 @@
 (defn
   #^{:test (fn []
     (assert (false? (has-pair [])))
-    (assert (false? (has-pair [[:S :A]])))
-    (assert (true? (has-pair [[:S :A], [:H :A]])))
-    (assert (true? (has-pair [[:S :A], [:H :A], [:H :K]])))
-    (assert (true? (has-pair [[:S :A], [:H :A], [:D :A]])))
-    (assert (false? (has-pair [[:S :A], [:H :Q], [:H :K]]))))}
+    (assert (false? (has-pair [[:Ace :Spades]])))
+    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts]])))
+    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts]])))
+    (assert (true? (has-pair [[:Ace :Spades], [:Ace :Hearts], [:Ace :Diamonds]])))
+    (assert (false? (has-pair [[:Ace :Spades], [:Queen :Hearts], [:King :Hearts]]))))}
   has-pair [hand]
   (if (some #(> % 1) (vals (member-counts (ranks hand)))) true false))
 
 (defn
   #^{:test (fn []
     (assert (false? (has-three-of-a-kind [])))
-    (assert (false? (has-three-of-a-kind [[:S :A]])))
-    (assert (false? (has-three-of-a-kind [[:S :A] [:H :A]])))
-    (assert (false? (has-three-of-a-kind [[:S :A] [:H :A] [:H :K]])))
-    (assert (true? (has-three-of-a-kind [[:S :A] [:H :A] [:D :A]])))
-    (assert (true? (has-three-of-a-kind [[:S :A] [:H :A] [:C :2] [:D :A]])))
-    (assert (false? (has-three-of-a-kind [[:S :A] [:H :K] [:C :2] [:D :A]])))
-    (assert (false? (has-three-of-a-kind [[:S :A] [:H :Q] [:H :K]]))))}
+    (assert (false? (has-three-of-a-kind [[:Ace :Spades]])))
+    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts]])))
+    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:King :Hearts]])))
+    (assert (true? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:Ace :Diamonds]])))
+    (assert (true? (has-three-of-a-kind [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
+    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:King :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
+    (assert (false? (has-three-of-a-kind [[:Ace :Spades] [:Queen :Hearts] [:King :Hearts]]))))}
   has-three-of-a-kind [hand]
   (if (some #(> % 2) (vals (member-counts (ranks hand)))) true false))
 
