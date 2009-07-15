@@ -7,18 +7,16 @@
     (println "New game")))
 
 
-(defn take-card []
-  (dosync 
-    (let [card (first @deck)] 
-      (alter deck #(drop 1 %))
-      card)))
+(defn take-card [deck]
+  (list (first deck) (drop 1 deck)))
 
 (defn deal []
-  (dosync (doall  ; doall needed to ensure map occurs inside transaction
-    (map 
-      (fn [hand] (alter hand conj (take-card))) 
-      hands)) nil))
-
+  (doseq [hand hands] 
+    (dosync 
+      (let [[card new-deck] (take-card @deck)] 
+        (alter hand conj card)
+        (ref-set deck new-deck)))))
+      
 (defn show-hands []
   (do
     (println "Hands now:")
@@ -36,3 +34,6 @@
 (show-hands)
 (deal)
 (show-hands)
+
+
+
