@@ -1,5 +1,5 @@
-; a card is a two element vector of keyworks [:rank :suit] e.g. [:Ace :Spades] is ace of spades
-; a hand is a seq of cards e. g. [[:Ace :Spades] [:Two :Clubs]] is ace of spades and 2 of clubs
+; a card is a two element vector of keyworks [:rank :suit] e.g. [:A :S] is ace of spades
+; a hand is a seq of cards e. g. [[:A :S] [:2 :C]] is ace of spades and 2 of clubs
 
 (defn ranks [hand] (map first hand))
 
@@ -20,34 +20,40 @@
       )) {} coll)
 )
 
-(defn sets [how-many] (fn [hand] (set (map first (filter #(= how-many (second %)) (member-counts (ranks hand)))))))
+(defn sets [how-many] 
+  (fn [hand] 
+    (set                                              ; return the result as a set
+      (map first (filter                              ; take the ranks
+                    #(= how-many (second %))          ; whose count is how-many
+                    (member-counts (ranks hand))))))) ; count how many of each rank occur in each hand
 
 (defn
   #^{:test (fn []
     (assert (= #{} (pairs [])))
-    (assert (= #{} (pairs [[:Ace :Spades]])))
-    (assert (= #{:Ace} (pairs [[:Ace :Spades], [:Ace :Hearts]])))
-    (assert (= #{:Ace} (pairs [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts]])))
-    (assert (= #{:Ace :King} (pairs [[:Ace :Spades], [:Ace :Hearts], [:King :Hearts], [:King :Clubs]])))
-    (assert (= #{} (pairs [[:Ace :Spades], [:Ace :Hearts], [:Ace :Diamonds]])))
-    (assert (= #{} (pairs [[:Ace :Spades], [:Queen :Hearts], [:King :Hearts]]))))}
+    (assert (= #{} (pairs [[:A :S]])))
+    (assert (= #{:A} (pairs [[:A :S], [:A :H]])))
+    (assert (= #{:A} (pairs [[:A :S], [:A :H], [:K :H]])))
+    (assert (= #{:A :K} (pairs [[:A :S], [:A :H], [:K :H], [:K :C]])))
+    (assert (= #{} (pairs [[:A :S], [:A :H], [:A :D]])))
+    (assert (= #{} (pairs [[:A :S], [:Q :H], [:K :H]]))))}
   pairs [hand]
   ((sets 2) hand))
 
 (defn
   #^{:test (fn []
     (assert (= #{} (threes [])))
-    (assert (= #{} (threes [[:Ace :Spades]])))
-    (assert (= #{} (threes [[:Ace :Spades] [:Ace :Hearts]])))
-    (assert (= #{} (threes [[:Ace :Spades] [:Ace :Hearts] [:King :Hearts]])))
-    (assert (= #{:Ace} (threes [[:Ace :Spades] [:Ace :Hearts] [:Ace :Diamonds]])))
-    (assert (= #{:Ace} (threes [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
-    (assert (= #{} (threes [[:Ace :Spades] [:King :Hearts] [:Two :Clubs] [:Ace :Diamonds]])))
-    (assert (= #{:Ace :Two} (threes [[:Ace :Spades] [:Ace :Hearts] [:Two :Clubs] [:Ace :Diamonds] [:Two :Hearts] [:Two :Diamonds]])))
-    (assert (= #{} (threes [[:Ace :Spades] [:Queen :Hearts] [:King :Hearts]]))))}
+    (assert (= #{} (threes [[:A :S]])))
+    (assert (= #{} (threes [[:A :S] [:A :H]])))
+    (assert (= #{} (threes [[:A :S] [:A :H] [:K :H]])))
+    (assert (= #{:A} (threes [[:A :S] [:A :H] [:A :D]])))
+    (assert (= #{:A} (threes [[:A :S] [:A :H] [:2 :C] [:A :D]])))
+    (assert (= #{} (threes [[:A :S] [:K :H] [:2 :C] [:A :D]])))
+    (assert (= #{:A :2} (threes [[:A :S] [:A :H] [:2 :C] [:A :D] [:2 :H] [:2 :D]])))
+    (assert (= #{} (threes [[:A :S] [:Q :H] [:K :H]]))))}
   threes [hand]
   ((sets 3) hand))
 
 (test #'member-counts)
 (test #'pairs)
 (test #'threes)
+
