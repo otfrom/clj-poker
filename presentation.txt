@@ -1,6 +1,6 @@
 
 
-What is Clojure?
+ What is Clojure?
 
  - a Lisp
  
@@ -15,7 +15,7 @@ What is Clojure?
  
  
  
-Why Clojure?
+ Why Clojure?
 
  - "Mutable stateful objects are the new spaghetti code"
       Rich Hickey
@@ -126,10 +126,10 @@ public class StringUtils {
 	(for [file "ABCDEFGH" rank (range 1 9)] 
 		(format "%c%d" file rank))
 		
-	  =>("A1" "A2" ... elided ... "H7 "H8")
+	  => ("A1" "A2" ... elided ... "H7 "H8")
   
  
-Clojure basics - calling Java
+ Clojure basics - calling Java
 
 	- (def rnd (java.util.Random.))
 		
@@ -163,7 +163,7 @@ Clojure basics - mutable state
 	
 	
 	
-Clojure basics - other
+ Clojure basics - other
 
  - let provides lexical scoped bindings
 
@@ -173,10 +173,10 @@ Clojure basics - other
     [[bottom left] [top left] [top right] [bottom right]]))
 	   
  - destructuring in binding - use to bind local names to elements of a seq 
-    (let [[x y] [1 2 3]] 
-		[x y])
+    (let [[x _ y] [1 2 3]] 
+		(+ x y))
 		
-		=> [1 2]
+		=> 4
  
  
  Clojure basics - tests
@@ -196,16 +196,16 @@ Clojure basics - other
 	
 
 
-  Basic requirements
+ Basic requirements
 	
- - A card is a seq (rank suit) (:A :S) is Ace of Spades. 
-	  Ranks are (:A :K :Q: J :10) Suits are (:C :D :H :S)
- 
+ - A card is a seq (rank suit) eg (:A :S) is Ace of Spades
+	 Ranks are (:A :K :Q: :J :10) Suits are (:C :D :H :S)
+  
  - At the start of the game, the deck is a shuffled seq of all cards, and each of the n players has a hand represented by an empty seq
  
  - After each (deal) call, the top n cards on the deck are distributed to each of the players in turn.
 
- - The first player to hold a pair wins. If two or more players hold a pair, the highest rank pair wins. If the rank is equal, the hand is drawn.
+ - The first player to hold a pair wins. If two or more players hold a pair, the highest rank pair wins. If the rank is equal, the game is drawn.
   
  
  Optional requirements
@@ -240,9 +240,9 @@ Clojure basics - other
  Dojo advice
  
  
- - which areas will expose us most to FP and STM? Chosen problem so that some areas lend to FP, some to STM, some to Java integration.
+ - Consider which areas will expose us most to FP and STM? We've chosen the problem so that some areas lend to FP, some to STM, some to Java integration.
  
- - don't want to spend the whole session writing shuffle so feel free to use java java.util.Collections.shuffle on a java.util.ArrayList to demonstrate Java interop
+ - don't want to spend the whole session writing shuffle so feel free to use java.util.Collections.shuffle on a java.util.ArrayList to demonstrate Java interop
  
  - Please git commit -a -m "name, name, message" between each pair swap
  
