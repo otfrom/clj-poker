@@ -1,0 +1,21 @@
+(def prime-minister (ref "Gordon Brown"))
+(def chancellor (ref "Alastair Darling"))
+@prime-minister
+@chancellor
+(ref-set prime-minister "David Cameron")
+@prime-minister
+@chancellor
+(dosync 
+	(ref-set prime-minister "David Cameron")
+	(ref-set chancellor "George Osborn"))
+@prime-minister
+@chancellor
+
+
+(def messages (ref ()))
+
+(defn add-message [msg]
+	(dosync (alter messages conj msg)))
+	
+(add-message "hello")
+(add-message "goodbye")

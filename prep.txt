@@ -1,0 +1,19 @@
+sign out of all chrome sessions
+close notes, twitter, pidgin, gtalk, itunes, spotify
+open Halloway
+open chrome at API home page
+
+reset to clean branch:
+	cd /c/alex/code/clj-poker
+	git checkout dojo
+
+open waterfront:
+	cd C:\alex\programs\waterfront
+	wf.bat
+	Ctrl-= to increase font size
+
+open repl:
+	cd C:\alex\code\clojure_1.0.0
+	java -cp clojure-1.0.0.jar clojure.lang.Repl
+	
+Increase font size in Repl

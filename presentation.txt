@@ -1,0 +1,275 @@
+
+
+What is Clojure?
+
+ - a Lisp
+ 
+ - a dynamic programming language
+ 
+ - a functional programming language with a rich set of immutable data structures
+ 
+ - designed to supported concurrent multi-threaded programs when mutable state is needed
+ 
+ - a JVM language
+
+ 
+ 
+ 
+Why Clojure?
+
+ - "Mutable stateful objects are the new spaghetti code"
+      Rich Hickey
+
+ - but mutable state is a reality in simulations and dealing with the outside world
+	  
+ - the VM is the new OS; the JVM is widely available and trusted and provides Java libs
+ 
+ - we need concurrency to take advantage of modern machines, so let's make it as simple as possible
+
+ 
+
+ 
+public class StringUtils {
+  public static boolean isBlank(String str) {
+    int strLen;
+    if (str == null || (strLen = str.length()) == 0) {
+      return true;
+    }
+    for (int i = 0; i < strLen; i++) {
+      if ((Character.isWhitespace(str.charAt(i))==false)) {
+        return false;
+      }
+	}
+	return true;
+  }
+}
+
+ 
+ 
+
+ 
+ 
+ 
+  
+ (defn blank? [s] (every? #(Character/isWhitespace %) s))
+ 
+ 
+ 
+
+
+
+
+
+
+ 
+ 
+ (defn blank? [s] (every? #(Character/isWhitespace %) s))
+ 
+  - defines a function
+  - called blank?	
+  - takes one argument, s
+  - returns true if Character/isWhitespace is true for every character in s
+ 
+  - Java interoperation 
+  - seq over strings (can also do seq over Regex, file system, XML....)
+  - higher order functions
+  
+  
+  
+
+  
+ Clojure basics - functions
+ 
+	(defn function-name [arg1 arg2] body)
+   
+	e.g. (defn hello [who] (println who))
+	e.g. (defn indexable-word? [word] (> (count word) 2))
+   
+	(function-to-call arg1 arg2)
+	
+	e.g. (indexable-word? "hello") => true
+	
+	
+	
+	
+	
+	
+	  
+ Clojure basics - seqs
+ 
+    - Generalizes Lisp's lists to encompass other types
+	- maps {key1 val1 key2 val2}
+	- vectors [e1 e2 e3]
+	- lists '(e1 e2 e3) or (list e1 e2 e3)
+	- sets #{e1 e2 e3}
+	
+	- first, rest, cons, into, take, drop
+	- range, repeat, iterate
+	- filter, map, reduce, sort, take-while, drop-while
+	- every?, some
+	- for
+	- sequences are immutable and persistent
+	- most sequences are lazy, use dorun or doall to force
+	
+	  
+ Clojure basics - map, reduce, for
+ 
+	(map #(* 2 %) (list 1 2 3))
+	(map (fn [x] (* 2 x)) (list 1 2 3))
+	
+	  => (2 4 6)
+	  
+	(reduce + 611 (range 1 11))
+	
+	  => 666
+	  
+	(for [file "ABCDEFGH" rank (range 1 9)] 
+		(format "%c%d" file rank))
+		
+	  =>("A1" "A2" ... elided ... "H7 "H8")
+  
+ 
+Clojure basics - calling Java
+
+	- (def rnd (java.util.Random.))
+		
+		. is constructor
+		Random rnd = new java.util.Random();
+
+	- (def result (.nextInt rnd 10))
+	    
+			int result = rnd.nextInt(10);
+			
+    - (def now (System/currentTimeMillis)) 
+		
+		/ for statics
+		
+			
+		
+Clojure basics - mutable state
+
+    - refs are mutable references to immutable objects
+	- can only be altered in transactions
+	- transactions are ACI, not D
+	- can specify validation for refs to fail transactions
+	
+	(def ref-name (ref initial-value))
+	
+	(dosync (ref-set ref-name new-value))
+	
+	(dosync (alter messages conj msg))
+	
+	     - calls (conj messages msg)
+	
+	
+	
+Clojure basics - other
+
+ - let provides lexical scoped bindings
+
+(defn square-corners [bottom left size]
+  (let [top (+ bottom size)
+        right (+ left size)]
+    [[bottom left] [top left] [top right] [bottom right]]))
+	   
+ - destructuring in binding - use to bind local names to elements of a seq 
+    (let [[x y] [1 2 3]] 
+		[x y])
+		
+		=> [1 2]
+ 
+ 
+ Clojure basics - tests
+ 
+	(defn
+		#^{:test (fn []
+			(assert (= 3 (add 1 2)))
+			(assert (= 1 (add 1 0)))
+			(assert (= 323 (add 299 24))))}
+		add [l r]
+		(+ l r))
+
+	(test #'add)
+	
+	
+	
+	
+
+
+  Basic requirements
+	
+ - A card is a seq (rank suit) (:A :S) is Ace of Spades. 
+	  Ranks are (:A :K :Q: J :10) Suits are (:C :D :H :S)
+ 
+ - At the start of the game, the deck is a shuffled seq of all cards, and each of the n players has a hand represented by an empty seq
+ 
+ - After each (deal) call, the top n cards on the deck are distributed to each of the players in turn.
+
+ - The first player to hold a pair wins. If two or more players hold a pair, the highest rank pair wins. If the rank is equal, the hand is drawn.
+  
+ 
+ Optional requirements
+ 
+  - Players start with a score of 0 and increment by 1 each time they win a hand.
+  
+  - What happens when the deck runs out before the hand finishes?
+ 
+
+
+
+
+
+
+
+
+ 
+ Requirements - user interface
+
+ - The game is run by issuing  (load-file "c:\\alex\\code\\clj-poker\\game.clj") in a Repl. 
+ 
+ - (new-game n) resets the game with n players.
+ 
+ - (deal) deals. After each command, the states of the hands are shown. After each hand is won, the scores are shown.
+ 
+ 
+ 
+ 
+ 
+
+ 
+ Dojo advice
+ 
+ 
+ - which areas will expose us most to FP and STM? Chosen problem so that some areas lend to FP, some to STM, some to Java integration.
+ 
+ - don't want to spend the whole session writing shuffle so feel free to use java java.util.Collections.shuffle on a java.util.ArrayList to demonstrate Java interop
+ 
+ - Please git commit -a -m "name, name, message" between each pair swap
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
