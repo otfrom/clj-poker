@@ -1,9 +1,12 @@
 (load-file "C:\\alex\\code\\clj-poker\\deck.clj")
+(def deck (ref []))
+(def hands [(ref [])(ref [])])
 
 (defn new-game []
   (dosync
     (ref-set deck (shuffle all-cards))
-    (def hands [(ref []) (ref []) (ref [])])
+    (doseq [hand hands]
+      (ref-set hand []))
     (println "New game")))
 
 
@@ -22,6 +25,7 @@
     (println "Hands now:")
     (doseq [h hands] (println @h))))
 
+(show-hands)
 (new-game)
 (show-hands)
 (deal)
@@ -34,6 +38,7 @@
 (show-hands)
 (deal)
 (show-hands)
+
 
 
 
