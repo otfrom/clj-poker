@@ -165,7 +165,7 @@ Clojure basics - mutable state
 	
  Clojure basics - other
 
- - let provides lexical scoped bindings
+ - let provides lexically scoped bindings
 
 (defn square-corners [bottom left size]
   (let [top (+ bottom size)
@@ -199,7 +199,7 @@ Clojure basics - mutable state
  Basic requirements
 	
  - A card is a seq (rank suit) eg (:A :S) is Ace of Spades
-	 Ranks are (:A :K :Q: :J :10) Suits are (:C :D :H :S)
+	 Ranks are (:A :K :Q :J :10) Suits are (:C :D :H :S)
   
  - At the start of the game, the deck is a shuffled seq of all cards, and each of the n players has a hand represented by an empty seq
  
@@ -235,7 +235,7 @@ Clojure basics - mutable state
  
  
  
-
+ 
  
  Dojo advice
  
