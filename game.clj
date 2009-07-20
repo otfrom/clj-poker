@@ -2,6 +2,7 @@
 
 (def *ranks* '(:A :K :Q :J :10))
 (def *suits* '(:C :D :H :S))
+(def *card-order* {:A 5 :K 4 :Q 3 :J 2 :10 1 :9 0})
 
 (def *cards*
   (for [rank *ranks* suit *suits*]
@@ -62,6 +63,26 @@
                (assoc %1 rank 1)))
        {} hand))
 
+(defn
+   #^{:test (fn []
+      (assert (= '(:A)
+                 (all-pairs [[:A :C] [:A :D] [:9 :D]]))))}
+  all-pairs [hand]
+    (map first (filter 
+      (fn [[rank count]] (> count 1)) 
+      (count-ranks hand))))
+
+(defn
+   #^{:test (fn []
+      (assert (= :A
+                 (highest-pair [[:A :C] [:A :D] [:9 :D] [:9 :C]]))))}
+  highest-pair [hand]
+    ((map-invert 
+      *card-order*) 
+      (reduce max (map *card-order* (all-pairs hand)))))
+
+     
+
 (new-game 5)
 
 (deal)
@@ -71,4 +92,6 @@
 
 (test #'has-pair)
 (test #'count-ranks)
+(test #'all-pairs)
+(test #'highest-pair)
 
