@@ -21,10 +21,10 @@
       Rich Hickey
 
  - but mutable state is a reality in simulations and dealing with the outside world
-	  
- - the VM is the new OS; the JVM is widely available and trusted and provides Java libs
  
  - we need concurrency to take advantage of modern machines, so let's make it as simple as possible
+	  
+ - the VM is the new OS; the JVM is widely available and trusted and provides Java libs
 
  
 
